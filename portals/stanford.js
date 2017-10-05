@@ -26,3 +26,4 @@ function accessStanford(aamcid, password) {
         return state;
     })
 }
+module.exports = accessStanford;
