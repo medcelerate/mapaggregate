@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/medcelerate/mapaggregate#readme",
   "dependencies": {
+    "@blueprintjs/core": "^1.30.0",
     "node-horseman": "^3.3.0"
   }
 }
