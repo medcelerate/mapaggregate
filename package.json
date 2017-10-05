@@ -1,0 +1,22 @@
+{
+  "name": "aggregator",
+  "version": "1.0.0",
+  "description": "An application aggregator",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medcelerate/mapaggregate.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/medcelerate/mapaggregate/issues"
+  },
+  "homepage": "https://github.com/medcelerate/mapaggregate#readme",
+  "dependencies": {
+    "node-horseman": "^3.3.0"
+  }
+}
