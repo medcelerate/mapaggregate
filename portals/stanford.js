@@ -9,12 +9,13 @@ function accessStanford(aamcid, password) {
     let horseman = new Horseman();
     let userid = aamcid;
     let pass = password;
+    let poststring = 'aamcId=' + userid + '&password=' + pass
     let state = null;
 
     horseman
     .userAgent('')
     .open('https://med.stanford.edu/aes')
-    .post('https://med.stanford.edu/aes/login.do','aamcId=&password=')
+    .post('https://med.stanford.edu/aes/login.do', poststring)
     .wait(500)
     .open('https://med.stanford.edu/aes/applicationStatus.do')
     .html('table[class="application-table"]')
