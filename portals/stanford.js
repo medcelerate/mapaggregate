@@ -5,7 +5,7 @@ This specific package depends on horsemanjs and phantom js. Phantom can be insta
 
 const Horseman = require('node-horseman');
 
-function accessStanford(aamcid, password) {
+function accessStanford(aamcid, password, callback) {
     let horseman = new Horseman();
     let userid = aamcid;
     let pass = password;
@@ -19,12 +19,10 @@ function accessStanford(aamcid, password) {
     .open('https://med.stanford.edu/aes/applicationStatus.do')
     .html('table[class="application-table"]')
     .then((text) => {
-        state = text;
+        console.log('calling back');
+        callback(text)
     })
     .close()
-    .then(() => {
-        return state;
-    })
 }
 module.exports = {
     accessStanford: accessStanford
