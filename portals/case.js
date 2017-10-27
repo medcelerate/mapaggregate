@@ -2,8 +2,8 @@ const Horseman = require('node-horseman');
 
 function accessCase (email, password) {
     let horseman = new Horseman();
-    let userid = string(email);
-    let pass = string(password);
+    let userid = String(email);
+    let pass = String(password);
     let stateca = null;
     let statecc = null;
 

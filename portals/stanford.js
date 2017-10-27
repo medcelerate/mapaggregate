@@ -11,9 +11,8 @@ function accessStanford(aamcid, password) {
     let pass = password;
     let poststring = 'aamcId=' + userid + '&password=' + pass
     let state = null;
-
     horseman
-    .userAgent('')
+    .userAgent('Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0')
     .open('https://med.stanford.edu/aes')
     .post('https://med.stanford.edu/aes/login.do', poststring)
     .wait(500)
@@ -27,4 +26,6 @@ function accessStanford(aamcid, password) {
         return state;
     })
 }
-module.exports = accessStanford;
+module.exports = {
+    accessStanford: accessStanford
+};

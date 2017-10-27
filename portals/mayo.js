@@ -29,3 +29,7 @@ function accessMayo(aamcid, password) {
         return state;
     });
 }
+
+module.exports = {
+    accessMayo: accessMayo
+}

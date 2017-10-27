@@ -1,6 +1,6 @@
 const restify = require('restify');
 const server = restify.createServer();
-const data = require('handlers')
+const data = require('../handlers')
 
 server.use(restify.plugins.bodyParser());
 
@@ -13,4 +13,4 @@ server.get('/', restify.plugins.serveStatic({
 
 server.post('/handlers', data.pulldown)
 
-server.listen(8080)
+server.listen(8080, console.log("Server is listenting"))
