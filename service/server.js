@@ -1,6 +1,7 @@
 const restify = require('restify');
 const server = restify.createServer();
-const data = require('../handlers.js');
+const data = require('handlers')
+
 server.use(restify.plugins.bodyParser());
 
 server.get('/', restify.plugins.serveStatic({
@@ -8,6 +9,8 @@ server.get('/', restify.plugins.serveStatic({
     'default': 'index.html'
 })
 )
+
+
 server.post('/handlers', data.pulldown)
 
 server.listen(8080)
