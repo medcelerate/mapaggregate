@@ -71,6 +71,7 @@ function scrape(resolve, reject) {
         }
         else {
             reject("Nope")
+            break;
         }
     }
     });
