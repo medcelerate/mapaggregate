@@ -5,13 +5,19 @@ This specific package depends on horsemanjs and phantom js. Phantom can be insta
 
 const Horseman = require('node-horseman');
 
-function accessStanford(aamcid, password, callback) {
+function accessStanford(aamcid, password) {
     let horseman = new Horseman();
-    let userid = aamcid;
-    let pass = password;
+    let pass = ""
+    if (password.length() > 10) {
+        pass = String(password.substring(0, password.length()-1));
+    }
+    else {
+        pass = String(password);
+    }
+    let userid = String(aamcid);
     let poststring = 'aamcId=' + userid + '&password=' + pass
-    let state = null;
-    horseman
+ 
+    return horseman
     .userAgent('Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0')
     .open('https://med.stanford.edu/aes')
     .post('https://med.stanford.edu/aes/login.do', poststring)
@@ -19,8 +25,12 @@ function accessStanford(aamcid, password, callback) {
     .open('https://med.stanford.edu/aes/applicationStatus.do')
     .html('table[class="application-table"]')
     .then((text) => {
-        console.log('calling back');
-        callback(text)
+        return text
+        //console.log(text);
+        //callback(text)
+    })
+    .catch((err) => {
+        console.log(err);
     })
     .close()
 }

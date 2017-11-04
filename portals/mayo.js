@@ -6,7 +6,7 @@ function accessMayo(aamcid, password) {
     let pass = password;
     let state = null;
 
-    horseman
+    return horseman
     .userAgent('Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0')
     .open('https://medschoolapplyminnesota.mayo.edu/Security/Login.aspx?ReturnUrl=%2f')
     .click('a[data-toggle="collapse"]')
@@ -19,15 +19,14 @@ function accessMayo(aamcid, password) {
     .then((message_count) => {
         message_count = message_count -1;
         if (message_count != 0) {
-            state = message_count;
-        };
+            return message_count
+        } else {
+            return 0;
+        }
     })
     .click('a[id="ctl00_AmpHeader1_logout"]')
     .waitForNextPage()
     .close()
-    .then(() => {
-        return state;
-    });
 }
 
 module.exports = {

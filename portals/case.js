@@ -19,14 +19,20 @@ function accessCase (email, password) {
         message_count = message_count -1
         if (message_count != 0) {
             stateca = message_count;
-        };
+        }
+        else {
+            stateca = 0;
+        }
     })
     .count('#MainContent_dtlCP > span')
     .then((message_count)=> {
         message_count = message_count -1
         if (message_count != 0) {
             statecc = message_count;
-        };
+        } 
+        else {
+            stecc = 0;
+        }
     })
     .close()
     .then(() => {

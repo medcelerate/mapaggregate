@@ -6,7 +6,7 @@ function accessHarvard(aamcid, password) {
     let pass = password;
     let state = null;
 
-    horseman
+    return horseman
     .userAgent('Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0')
     .open('https://admissions.hms.harvard.edu/security/Login.aspx?ReturnUrl=%2fdefault.aspx')
     .type('input[name="Login1$UserName"]', userid)
@@ -17,15 +17,17 @@ function accessHarvard(aamcid, password) {
     .html('#unread_count','')
     .then((message_count) => {
         if (message_count != 0) {
-            state = message_count;
-        };
+            return message_count;
+        } else {
+            return 0;
+        }
     })
     .click('a[id="ctl00_Header_HyperLink1"]')
     .waitForNextPage()
     .close()
-    .then(() => {
-        return state;
-    });
+    .catch((err) => {
+        console.log(err)
+    })
 }
 
 module.exports = {
