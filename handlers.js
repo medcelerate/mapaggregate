@@ -5,50 +5,95 @@ const stanford = require('./portals/stanford')
 const casew = require('./portals/case')
 const mayo = require('./portals/mayo')
 const harvard = require('./portals/harvard')
+const cc = require('./portals/cc.js')
 
-function computeDeltas(datau) {
-    if (fs.existsSync('./state.json')) {
-        let state = {}
-        let rawdata = fs.readFileSync('./state.json');  
-        let data = JSON.parse(rawdata);
+function computeDeltas(dataUpdated) {
+    return new Promise(function(resolve,reject){
+    if (fs.existsSync('./db.json')) {
+        let state = []
+        let rawdata
+        let data
+        try {
+            rawdata = fs.readFileSync('./db.json');
+        } catch (e) {
+            reject(e)
+        }
+        try {
+             data = JSON.parse(rawdata);
+        } catch (e) {
+            reject(e)
+        }
+
         for (var key in data) {
             if (data.hasOwnProperty(key)) {
-                if (data[key] != datau[key]) {
-                    data[key].data = datau[key]
-                    data[key].update = true
+                if (typeof dataUpdated[key] == 'undefined') {
+                    state.push({school: key, update: 'failed'})
+                }
+                else if (data[key].data != dataUpdated[key]) {
+                    data[key].data = dataUpdated[key]
+                    state.push({school: key, update: true})
                 }
                 else {
-                    data[key].update = false
+                    state.push({school: key, update: false})
                 }
             }
         }
-        fs.writeFileSync('./state.json', data)
+        data = JSON.stringify(data)
+        fs.writeFile('./db.json', data, 'utf8', () => {
+            resolve(state)
+            //console.log('Yay')
+        })
     }
     else {
-        let state = {}
-        for (var key in datau) {
-            if (datau.hasOwnProperty(key)) {
-                state[key] = {data: datau, update: false};
+        let state = []
+        let data = {}
+        for (var key in dataUpdated) {
+            if (dataUpdated.hasOwnProperty(key)) {
+                data[key] = {data: dataUpdated[key], update: true};
+                state.push({school: key, update: false})
             }
             else {
                 continue;
             }
         }
-        fs.writeFileSync('./state.json', state)
+        data = JSON.stringify(data)
+        fs.writeFile('./db.json', data, 'utf8', () => {
+            resolve(state)
+        })
     }
-        
+    })
 }
 
+
  async function pulldata(req) {
+    // I plan to make this asynchronous soon using Promise.all, I needed to get it functioning properly first
     let dataUpdate = {}
+    let [sd, hd, mo, ce, cn] = await Promise.all([
+        stanford.accessStanford(req.body.aamcid, req.body.pass),
+        harvard.accessHarvard(req.body.aamcid, req.body.pass),
+        mayo.accessMayo(req.body.aamcid, req.body.pass),
+        casew.accessCase(req.body.email, req.body.pass),
+        cc.accessCC(req.body.email, req.body.pass)
+    ]);
+    dataUpdate = {
+        'Stanford':sd,
+        'Harvard':hd,
+        'Mayo Clinic':mo,
+        'Case Western':ce,
+        'Cleveland Clinic':cn
+    }
+    /*
     dataUpdate.sd = await stanford.accessStanford(req.body.aamcid, req.body.pass);
     dataUpdate.hd = await harvard.accessHarvard(req.body.aamcid, req.body.pass);
     dataUpdate.mo = await mayo.accessMayo(req.body.aamcid, req.body.pass);
     dataUpdate.ce = await casew.accessCase(req.body.email, req.body.pass);
+    dataUpdate.cc = await cc.accessCC(req.body.email, req.body.pass);*/
+    console.log(dataUpdate)
     return dataUpdate
 }
 
 function pulldown(req, res, next) {
+    console.log(req.body)
     pulldata(req)
     .then((result) => {
         computeDeltas(result)
@@ -58,6 +103,9 @@ function pulldown(req, res, next) {
                 data: result
             }
             res.send(200, payload)
+        })
+        .catch((err) => {
+            return next(err)
         })
     })
 }

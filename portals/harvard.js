@@ -17,17 +17,16 @@ function accessHarvard(aamcid, password) {
     .html('#unread_count','')
     .then((message_count) => {
         if (message_count != 0) {
-            return message_count;
+            return true
         } else {
-            return 0;
+            return false
         }
+        horseman.click('a[id="ctl00_Header_HyperLink1"]').waitForNextPage().close()
     })
-    .click('a[id="ctl00_Header_HyperLink1"]')
-    .waitForNextPage()
-    .close()
     .catch((err) => {
         console.log(err)
     })
+
 }
 
 module.exports = {

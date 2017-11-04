@@ -23,10 +23,11 @@ function accessMayo(aamcid, password) {
         } else {
             return 0;
         }
+        horseman.click('a[id="ctl00_AmpHeader1_logout"]').waitForNextPage().close()
     })
-    .click('a[id="ctl00_AmpHeader1_logout"]')
-    .waitForNextPage()
-    .close()
+    .catch((err) => {
+        console.log(err)
+    })
 }
 
 module.exports = {

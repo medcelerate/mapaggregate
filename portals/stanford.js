@@ -8,8 +8,9 @@ const Horseman = require('node-horseman');
 function accessStanford(aamcid, password) {
     let horseman = new Horseman();
     let pass = ""
-    if (password.length() > 10) {
-        pass = String(password.substring(0, password.length()-1));
+    let n = password.length
+    if (n > 10) {
+        pass = String(password.substring(0, 10));
     }
     else {
         pass = String(password);
@@ -26,13 +27,11 @@ function accessStanford(aamcid, password) {
     .html('table[class="application-table"]')
     .then((text) => {
         return text
-        //console.log(text);
-        //callback(text)
+        horseman.open('https://med.stanford.edu/aeslogout.do/').close()
     })
     .catch((err) => {
         console.log(err);
     })
-    .close()
 }
 module.exports = {
     accessStanford: accessStanford
