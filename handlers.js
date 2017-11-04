@@ -67,6 +67,10 @@ function scrape(resolve, reject) {
         return;
         if (counter == 4) {
             resolve(state)
+            break;
+        }
+        else {
+            reject("Nope")
         }
     }
     });
