@@ -6,70 +6,83 @@ const casew = require('./portals/case')
 const mayo = require('./portals/mayo')
 const harvard = require('./portals/harvard')
 
-function pulldown(req, res, next) {
+var request = {}
+
+var performScrape = new Promise(
+function scrape(resolve, reject) {
     let state = {}
     let rawdata = fs.readFileSync('./state.json');  
     let data = JSON.parse(rawdata);
     let datau = {};
-    stanford.accessStanford(req.body.aamcid, req.body.pass, (response) => {
+    let counter = 0
+    stanford.accessStanford(request.body.aamcid, request.body.pass, (response) => {
         datau.sd = response;
         if (datau.sd != data.sd) {
         data.sd = datau.sd
         state.sd = true
+        counter++
         }
         else {
             state.sd = false
+            counter++
         }
     });
-    casew.accessCase(req.body.email, req.body.pass, (response) => {
+    casew.accessCase(request.body.email, request.body.pass, (response) => {
         data.cw = response;
         if (datau.case != data.case) {
             data.case = datau.case
             state.case = true
+            counter++
         }
         else {
             state.case = false
+            counter++
         }
 
     });
-    harvard.accessHarvard(req.body.aamcid, req.body.pass, (response) => {
-
+    harvard.accessHarvard(request.body.aamcid, request.body.pass, (response) => {
+        data.hd = response;
+        if (datau.hd != data.hd) {
+            data.hd = datau.hd
+            state.hd = true
+            counter++
+        }
+        else {
+            state.hd = false
+            counter++
+        }
     });
-    mayo.accessMayo(req.body.aamcid, req.body.pass, (response) => {
-
+    mayo.accessMayo(request.body.aamcid, request.body.pass, (response) => {
+        data.mo = response;
+        if (datau.mo != data.mo) {
+            data.mo = datau.mo
+            state.mo = true
+            counter++
+        }
+        else {
+            state.mo = false
+            counter++
+        }
+    while (true){
+        return;
+        if (counter == 4) {
+            resolve(state)
+        }
+    }
     });
+}
+)
 
-
-
-    if (datau.case != data.case) {
-        data.case = datau.case
-        state.case = true
-    }
-    else {
-        state.case = false
-    }
-
-    if (datau.hd != data.hd) {
-        data.hd = datau.hd
-        state.hd = true
-    }
-    else {
-        state.hd = false
-    }
-
-    if (datau.mo != data.mo) {
-        data.mo = datau.mo
-        state.mo = true
-    }
-    else {
-        state.mo = false
-    }
-
-    let payload = {
+function pulldown(req, res, next) {
+    request = req
+    performScrape
+    .then((result) => {
+        let payload = {
         status:'success',
-        data: state
+        data: result
     }
     res.send(200, payload)
+    })
 }
 
 module.exports = {
