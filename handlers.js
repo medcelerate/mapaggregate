@@ -6,6 +6,7 @@ const casew = require('./portals/case')
 const mayo = require('./portals/mayo')
 const harvard = require('./portals/harvard')
 const cc = require('./portals/cc.js')
+const bosU = require('./portals/bu.js')
 
 function computeDeltas(dataUpdated) {
     return new Promise(function(resolve,reject){
@@ -68,19 +69,21 @@ function computeDeltas(dataUpdated) {
  async function pulldata(req) {
     // I plan to make this asynchronous soon using Promise.all, I needed to get it functioning properly first
     let dataUpdate = {}
-    let [sd, hd, mo, ce, cn] = await Promise.all([
+    let [sd, hd, mo, ce, cn, bu] = await Promise.all([
         stanford.accessStanford(req.body.aamcid, req.body.pass),
         harvard.accessHarvard(req.body.aamcid, req.body.pass),
         mayo.accessMayo(req.body.aamcid, req.body.pass),
         casew.accessCase(req.body.email, req.body.pass),
-        cc.accessCC(req.body.email, req.body.pass)
+        cc.accessCC(req.body.email, req.body.pass),
+        bosU.accessBU(req.body.email, req.body.pass)
     ]);
     dataUpdate = {
         'Stanford':sd,
         'Harvard':hd,
         'Mayo Clinic':mo,
         'Case Western':ce,
-        'Cleveland Clinic':cn
+        'Cleveland Clinic':cn,
+        'Boston University':bu
     }
     /*
     dataUpdate.sd = await stanford.accessStanford(req.body.aamcid, req.body.pass);

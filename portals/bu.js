@@ -34,3 +34,6 @@ function accessBU (email, password) {
         console.log(err)
     })
 }
+module.exports = {
+    accessBU:accessBU
+}
