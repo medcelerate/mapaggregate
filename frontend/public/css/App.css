@@ -1,0 +1,29 @@
+
+.navbar-modifier {
+  background-color: #232B2B !important;
+}
+
+.card-modifier {
+  margin-left: 5% !important;
+  margin-right: 5% !important;
+  margin-top: 3% !important;
+  border-radius: 0 !important;
+}
+
+.input-modifier {
+  margin-right: 10px !important;
+}
+
+.navbar-heading-modifier {
+  color: white !important;
+}
+
+.input-wrapper {
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+}
+
+.button-modifier {
+  margin-left: 10px !important;
+}
